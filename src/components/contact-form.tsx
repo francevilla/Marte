@@ -1,130 +1,185 @@
 "use client";
 
 import { useState } from "react";
-import { t } from "@/lib/translations";
+import { contact, emailHref, phoneHref } from "@/lib/contact";
 import type { Lang, Translations } from "@/lib/translations";
 
-const EMAIL = "info@marinelysmarte.it";
-const PHONE = "+393330000000";
+type Status = "idle" | "sending" | "sent" | "fallback" | "error";
 
 export function ContactForm({ lang, T }: { lang: Lang; T: Translations }) {
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
+  const endpoint = process.env.NEXT_PUBLIC_FORM_ENDPOINT;
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
-    const name = (fd.get("name") ?? "").toString();
-    const phone = (fd.get("phone") ?? "").toString();
-    const emailVal = (fd.get("email") ?? "").toString();
-    const message = (fd.get("message") ?? "").toString();
-    const subject = `Richiesta chiamata da ${name || "un visitatore"} — ${T.contact.title}`;
-    const body = `Nome: ${name}\nTelefono: ${phone}\nEmail: ${emailVal}\n\nMessaggio:\n${message}`;
-    window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setSent(true);
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+
+    // Senza endpoint configurato il form ricade sul client email,
+    // ma il messaggio di successo resta onesto ("client email aperto").
+    if (!endpoint) {
+      const name = (fd.get("name") ?? "").toString();
+      const phone = (fd.get("phone") ?? "").toString();
+      const emailVal = (fd.get("email") ?? "").toString();
+      const message = (fd.get("message") ?? "").toString();
+      const subject = `Richiesta chiamata da ${name || "un visitatore"}`;
+      const body = `Nome: ${name}\nTelefono: ${phone}\nEmail: ${emailVal}\n\nMessaggio:\n${message}`;
+      window.location.href = `${emailHref}?subject=${encodeURIComponent(
+        subject,
+      )}&body=${encodeURIComponent(body)}`;
+      setStatus("fallback");
+      return;
+    }
+
+    setStatus("sending");
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        body: fd,
+        headers: { Accept: "application/json" },
+      });
+      if (!res.ok) throw new Error("Invio non riuscito");
+      form.reset();
+      setStatus("sent");
+    } catch {
+      setStatus("error");
+    }
   }
 
-  if (sent) {
+  if (status === "sent" || status === "fallback") {
     return (
       <div className="space-y-5 text-center">
-        <div className="w-16 h-16 rounded-full bg-[#C9A96A]/10 flex items-center justify-center mx-auto mb-4">
-          <span className="text-2xl">✉</span>
-        </div>
-        <h3 className="text-lg font-serif font-bold text-[#0F172A]">
-          {T.contact.form.success}
+        <h3 className="text-xl font-serif font-bold text-white">
+          {status === "sent"
+            ? T.contact.form.success
+            : T.contact.form.fallback}
         </h3>
-        <p className="text-[#64748B]">
-          Ti ricontatterò entro 24 ore. In alternativa:{""}
+        <p className="text-white/80">
+          {T.contact.phone}:{" "}
           <a
-            href={`tel:${PHONE.replace(/\s/g, "")}`}
-            className="text-[#1B2A4A] underline underline-offset-4 hover:text-brand-gold"
+            href={phoneHref}
+            className="text-brand-gold underline underline-offset-4 hover:text-white"
           >
-            {PHONE}
+            {contact.phone}
           </a>{" "}
-          o{" "}
+          · {T.contact.email}:{" "}
           <a
-            href={`mailto:${EMAIL}`}
-            className="text-[#1B2A4A] underline underline-offset-4 hover:text-brand-gold"
+            href={emailHref}
+            className="text-brand-gold underline underline-offset-4 hover:text-white"
           >
-            {EMAIL}
+            {contact.email}
           </a>
-          .
         </p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <div className="grid md:grid-cols-2 gap-5">
+    <form onSubmit={handleSubmit} className="space-y-5" lang={lang}>
+      <div className="grid gap-5 md:grid-cols-2">
         <div>
-          <label className="block text-sm font-medium text-white mb-1">
+          <label
+            htmlFor="contact-name"
+            className="mb-1 block text-sm font-medium text-white"
+          >
             {T.contact.form.name}
           </label>
           <input
+            id="contact-name"
             name="name"
             type="text"
             required
-            className="w-full px-4 py-3 rounded-lg border border-[#C9A96A]/50 bg-[#1B2A4A]/30 text-white placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-brand-gold"
+            autoComplete="name"
+            className="w-full rounded-lg border border-white/25 bg-white/5 px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-brand-gold"
             placeholder="Mario Rossi"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-white mb-1">
+          <label
+            htmlFor="contact-phone"
+            className="mb-1 block text-sm font-medium text-white"
+          >
             {T.contact.form.phone}
           </label>
           <input
+            id="contact-phone"
             name="phone"
             type="tel"
             required
-            className="w-full px-4 py-3 rounded-lg border border-[#C9A96A]/50 bg-[#1B2A4A]/30 text-white placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-brand-gold"
+            autoComplete="tel"
+            className="w-full rounded-lg border border-white/25 bg-white/5 px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-brand-gold"
             placeholder="+39 333 000 0000"
           />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-white mb-1">
+        <label
+          htmlFor="contact-email"
+          className="mb-1 block text-sm font-medium text-white"
+        >
           {T.contact.form.email}
         </label>
         <input
+          id="contact-email"
           name="email"
           type="email"
-          className="w-full px-4 py-3 rounded-lg border border-[#C9A96A]/50 bg-[#1B2A4A]/30 text-white placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-brand-gold"
+          autoComplete="email"
+          className="w-full rounded-lg border border-white/25 bg-white/5 px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-brand-gold"
           placeholder="mario@email.it"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-white mb-1">
+        <label
+          htmlFor="contact-message"
+          className="mb-1 block text-sm font-medium text-white"
+        >
           {T.contact.form.message}
         </label>
         <textarea
+          id="contact-message"
           name="message"
           rows={4}
-          className="w-full px-4 py-3 rounded-lg border border-[#C9A96A]/50 bg-[#1B2A4A]/30 text-white placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-brand-gold"
+          className="w-full rounded-lg border border-white/25 bg-white/5 px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-brand-gold"
           placeholder="Descrivimi brevemente l'immobile che vuoi vendere"
         />
       </div>
+
+      {status === "error" && (
+        <p
+          role="alert"
+          className="rounded-lg bg-red-950/60 px-4 py-3 text-sm text-red-100"
+        >
+          {T.contact.form.error}
+        </p>
+      )}
+
       <button
         type="submit"
-        className="w-full py-4 bg-brand-gold text-[#1B2A4A] font-bold rounded-full hover:opacity-90 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+        disabled={status === "sending"}
+        className="w-full rounded-full bg-brand-gold py-4 font-bold text-brand-navy transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:opacity-60"
       >
-        {T.contact.form.submit}
+        {status === "sending" ? T.contact.form.sending : T.contact.form.submit}
       </button>
-      <p className="mt-8 text-center text-[#C9A96A]/70 text-sm">
-        In alternativa:{""}
+
+      <p className="text-sm leading-relaxed text-white/70">
+        {T.contact.form.privacy}
+      </p>
+
+      <p className="text-center text-sm text-white/70">
+        {T.contact.phone}:{" "}
         <a
-          href={`tel:${PHONE.replace(/\s/g, "")}`}
-          className="text-white hover:text-brand-gold underline underline-offset-2"
+          href={phoneHref}
+          className="text-white underline underline-offset-2 hover:text-brand-gold"
         >
-          {PHONE}
+          {contact.phone}
         </a>{" "}
-        •{" "}
+        · {T.contact.email}:{" "}
         <a
-          href={`mailto:${EMAIL}`}
-          className="text-white hover:text-brand-gold underline underline-offset-2"
+          href={emailHref}
+          className="text-white underline underline-offset-2 hover:text-brand-gold"
         >
-          {EMAIL}
+          {contact.email}
         </a>
-        .
       </p>
     </form>
   );

@@ -1,14 +1,7 @@
 {
-  "version": 2,
-  "routes": [
-    { "src": "/it/(.*)", "dest": "/it/$1" },
-    { "src": "/en/(.*)", "dest": "/en/$1" },
-    { "src": "/es/(.*)", "dest": "/es/$1" },
-    { "src": "/(.*)", "dest": "/" },
-    { "src": "/robots.txt", "dest": "/robots.txt" },
-    { "src": "/sitemap.xml", "dest": "/sitemap.xml" },
-    { "src": "/favicon.svg", "dest": "/favicon.svg" },
-    { "src": "/images/(.*)", "dest": "/images/$1" }
+  "redirects": [
+    { "source": "/it", "destination": "/", "permanent": true },
+    { "source": "/it/", "destination": "/", "permanent": true }
   ],
   "headers": [
     {

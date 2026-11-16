@@ -23,6 +23,7 @@ const config = {
         brand: {
           navy: "#1B2A4A",
           gold: "#C9A96A",
+          goldInk: "#8A6A2F",
           cream: "#F7F3EE",
           ink: "#0F172A",
         },
