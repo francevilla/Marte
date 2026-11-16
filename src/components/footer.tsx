@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { contact, emailHref, phoneHref } from "@/lib/contact";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import type { Lang, Translations } from "@/lib/translations";
 
 export function Footer({ lang, T }: { lang: Lang; T: Translations }) {
@@ -22,6 +23,13 @@ export function Footer({ lang, T }: { lang: Lang; T: Translations }) {
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/70">
               {T.footer.albo}
             </p>
+            <div className="mt-4">
+              <LanguageSwitcher
+                lang={lang}
+                label={T.nav.language}
+                variant="dark"
+              />
+            </div>
           </div>
 
           <div>

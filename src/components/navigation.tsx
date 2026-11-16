@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import type { Lang, Translations } from "@/lib/translations";
 
 export function Navigation({ lang, T }: { lang: Lang; T: Translations }) {
@@ -19,7 +20,7 @@ export function Navigation({ lang, T }: { lang: Lang; T: Translations }) {
   return (
     <nav
       className="relative z-50 bg-white"
-      aria-label="Navigazione principale"
+      aria-label={T.nav.main}
     >
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 md:px-6">
         <Link
@@ -45,6 +46,7 @@ export function Navigation({ lang, T }: { lang: Lang; T: Translations }) {
               {s.label}
             </Link>
           ))}
+          <LanguageSwitcher lang={lang} label={T.nav.language} />
         </div>
 
         <div className="flex items-center gap-2">
@@ -57,7 +59,7 @@ export function Navigation({ lang, T }: { lang: Lang; T: Translations }) {
           <button
             type="button"
             className="flex h-9 w-9 items-center justify-center rounded-full text-ink md:hidden"
-            aria-label={open ? "Chiudi menu" : "Apri menu"}
+            aria-label={open ? T.nav.closeMenu : T.nav.openMenu}
             aria-expanded={open}
             onClick={() => setOpen((o) => !o)}
           >
@@ -99,6 +101,10 @@ export function Navigation({ lang, T }: { lang: Lang; T: Translations }) {
                 {s.label}
               </Link>
             ))}
+            <div className="mt-2 flex items-center justify-between px-3 py-2">
+              <span className="text-sm text-[#64748B]">{T.nav.language}</span>
+              <LanguageSwitcher lang={lang} label={T.nav.language} />
+            </div>
           </div>
         )}
       </div>
