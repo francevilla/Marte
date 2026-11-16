@@ -8,6 +8,10 @@ export type Translations = {
     process: string;
     faq: string;
     contact: string;
+    main: string;
+    language: string;
+    openMenu: string;
+    closeMenu: string;
   };
   hero: {
     title: string;
@@ -78,6 +82,10 @@ const base = {
     process: "Come lavoro",
     faq: "FAQ",
     contact: "Contatti",
+    main: "Navigazione principale",
+    language: "Lingua",
+    openMenu: "Apri il menu",
+    closeMenu: "Chiudi il menu",
   },
   hero: {},
   about: {
@@ -207,7 +215,13 @@ export const t: Record<Lang, Translations> = {
   },
   en: {
     ...base,
-    nav: { ...base.nav },
+    nav: {
+      ...base.nav,
+      main: "Main navigation",
+      language: "Language",
+      openMenu: "Open the menu",
+      closeMenu: "Close the menu",
+    },
     hero: {
       title: "Your property, my care.",
       sub: "From valuation to the deed, I guide you through every stage of the sale in Bologna: negotiation, condominium management, renovations, energy diagnosis and energy communities.",
@@ -315,7 +329,13 @@ export const t: Record<Lang, Translations> = {
   },
   es: {
     ...base,
-    nav: { ...base.nav },
+    nav: {
+      ...base.nav,
+      main: "Navegación principal",
+      language: "Idioma",
+      openMenu: "Abrir el menú",
+      closeMenu: "Cerrar el menú",
+    },
     hero: {
       title: "Su inmueble, mi cuidado.",
       sub: "Desde la tasación hasta la escritura, le acompaño en cada etapa de la venta en Bolonia: negociación, gestiones condominiales, rehabilitaciones, diagnóstico energético y comunidades energéticas.",
