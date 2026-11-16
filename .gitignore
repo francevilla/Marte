@@ -1,6 +1,8 @@
 node_modules/
 .next/
 out/
+.vercel/
+.env.local
 build/
 .dist/
 .env
@@ -9,3 +11,6 @@ build/
 npm-debug.log*
 .DS_Store
 .turbo/
+
+.vercel
+.env*
