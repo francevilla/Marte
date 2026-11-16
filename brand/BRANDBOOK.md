@@ -68,8 +68,8 @@ Massimo 2 famiglie. Tracking stretto (-0.02 a -0.05em) sui display, leading 0.85
 
 ## 9. Asset da consegnare (a cura del cliente)
 
+- **Foto professionale di Marinelys** → caricarla come `public/images/profile.jpg` nel repo (già referenziata nel codice; al momento c'è un placeholder SVG in `public/images/profile-placeholder.svg`)
 - Numero di telefono e email reali (per form e footer)
-- Foto professionale di Marinelys (al momento c'è un placeholder SVG)
 - Dati esatti iscrizione albo/ruolo (numero, CCIAA Bologna)
 - Recensioni/testimonianze (da inserire in social proof)
 

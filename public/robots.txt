@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://marte-bpdz0xpu5-francevilla.vercel.app/sitemap.xml

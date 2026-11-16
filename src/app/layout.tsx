@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://marinelysmarte.it"),
+  metadataBase: new URL("https://marte-bpdz0xpu5-francevilla.vercel.app"),
   title: {
     template: "%s | Marinelys Marte",
     default: "Marinelys Marte — Consulenza immobiliare 360° a Bologna",

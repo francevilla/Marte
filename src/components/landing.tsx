@@ -15,6 +15,9 @@ export function Landing({ lang, T }: { lang: Lang; T: Translations }) {
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-[#0F172A]">
+      <a href="#contact" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#1B2A4A] focus:text-white focus:rounded">
+        Vai ai contatti
+      </a>
       <Navigation lang={lang} T={T} />
 
       <main className="flex-grow">
@@ -35,7 +38,7 @@ export function Landing({ lang, T }: { lang: Lang; T: Translations }) {
             </p>
             <Link
               href="#contact"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#1B2A4A] text-white font-semibold rounded-full shadow-lg hover:bg-[#14203a] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#1B2A4A] text-white font-semibold rounded-full ring-1 ring-brand-gold/40 hover:bg-[#14203a] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2"
             >
               {T.hero.cta} →
             </Link>
@@ -47,13 +50,12 @@ export function Landing({ lang, T }: { lang: Lang; T: Translations }) {
           <div className="mx-auto max-w-5xl">
             <SectionHeader title={T.about.title} sub={T.about.sub} />
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="relative h-64 lg:h-80 rounded-2xl overflow-hidden shadow-xl border border-white">
-                <div className="absolute inset-0 bg-gradient-to-b from-brand-gold/20 to-transparent" />
+              <div className="relative h-64 lg:h-80 rounded-2xl overflow-hidden border border-white ring-1 ring-brand-gold/30">
                 <img
-                  src="/images/profile-placeholder.svg"
+                  src="/images/profile.jpg"
                   alt="Marinelys Marte"
                   className="w-full h-full object-cover"
-                  loading="lazy"
+                  loading="eager"
                   width="800"
                   height="800"
                   decoding="async"
