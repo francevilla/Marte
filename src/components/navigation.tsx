@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { t } from "@/lib/translations";
 import type { Lang, Translations } from "@/lib/translations";
 
 export function Navigation({ lang, T }: { lang: Lang; T: Translations }) {
   const [open, setOpen] = useState(false);
+  const home = lang === "it" ? "/" : `/${lang}`;
   const sections = [
     { key: "home", href: "#hero", label: T.nav.home },
     { key: "about", href: "#about", label: T.nav.about },
@@ -14,60 +14,86 @@ export function Navigation({ lang, T }: { lang: Lang; T: Translations }) {
     { key: "process", href: "#process", label: T.nav.process },
     { key: "faq", href: "#faq", label: T.nav.faq },
     { key: "contact", href: "#contact", label: T.nav.contact },
-    { key: "brandbook", href: "/brandbook", label: T.nav.brandbook },
   ];
 
   return (
-    <nav className="fixed z-50 top-0 left-0 right-0 bg-background/95 backdrop-blur border-b border-border" aria-label="Navigazione principale">
-      <div className="flex items-center justify-between px-4 py-3 md:px-6 lg:px-8">
+    <nav
+      className="relative z-50 bg-white"
+      aria-label="Navigazione principale"
+    >
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 md:px-6">
         <Link
-          href={lang === "it" ? "/" : `/${lang}`}
-          className="flex items-center gap-2"
+          href={home}
+          className="flex items-baseline gap-2"
           aria-label="Homepage"
         >
-          <span className="text-[22px] font-serif font-bold text-ink tracking-tight">MM</span>
-          <span className="font-serif font-semibold text-ink">Marinelys<span className="text-brand-gold">Marte</span></span>
+          <span className="text-[20px] font-serif font-bold tracking-tight text-ink">
+            MM
+          </span>
+          <span className="font-serif text-lg font-semibold text-ink">
+            Marinelys<span className="text-brand-goldInk">Marte</span>
+          </span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-6 text-sm font-medium text-ink">
+        <div className="hidden items-center gap-6 text-sm font-medium text-ink md:flex">
           {sections.map((s) => (
             <Link
               key={s.key}
               href={s.href}
-              className="hover:text-brand-gold transition-colors"
-              onClick={() => setOpen(false)}
+              className="transition-colors hover:text-brand-goldInk"
             >
               {s.label}
             </Link>
           ))}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <Link
             href="#contact"
-            className="md:hidden flex items-center justify-center w-9 h-9 rounded-full bg-brand-gold text-ink font-bold text-sm"
-            aria-label="Contatti"
-            onClick={() => setOpen(false)}
+            className="rounded-full bg-brand-navy px-4 py-2 text-sm font-semibold text-white md:hidden"
           >
-            ✉
+            {T.nav.contact}
           </Link>
           <button
-            className="md:hidden flex items-center justify-center w-9 h-9 rounded-full border border-border text-ink"
-            aria-label="Apri menu"
+            type="button"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-ink md:hidden"
+            aria-label={open ? "Chiudi menu" : "Apri menu"}
+            aria-expanded={open}
             onClick={() => setOpen((o) => !o)}
           >
-            ☰
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              aria-hidden="true"
+            >
+              {open ? (
+                <path
+                  d="M5 5l10 10M15 5L5 15"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                />
+              ) : (
+                <path
+                  d="M3 5.5h14M3 10h14M3 14.5h14"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                />
+              )}
+            </svg>
           </button>
         </div>
 
-        {/* Mobile menu */}
         {open && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-background border-b border-border py-4 px-4 space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="absolute inset-x-0 top-full bg-white px-4 py-3 md:hidden">
             {sections.map((s) => (
               <Link
                 key={s.key}
                 href={s.href}
-                className="block px-3 py-2 text-sm font-medium text-ink hover:bg-brand-gold/10 hover:text-brand-gold rounded"
+                className="block px-3 py-2 text-sm font-medium text-ink hover:text-brand-goldInk"
                 onClick={() => setOpen(false)}
               >
                 {s.label}

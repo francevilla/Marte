@@ -1,76 +1,103 @@
-"use strict";
-
 import Link from "next/link";
-import { t } from "@/lib/translations";
+import { contact, emailHref, phoneHref } from "@/lib/contact";
 import type { Lang, Translations } from "@/lib/translations";
 
 export function Footer({ lang, T }: { lang: Lang; T: Translations }) {
   const year = new Date().getFullYear();
-  const phone = "+39 333 000 0000";
-  const email = "info@marinelysmarte.it";
+  const home = lang === "it" ? "/" : `/${lang}`;
 
   return (
-    <footer className="border-t border-border bg-brand-navy text-white-90">
-      <div className="px-4 py-12 md:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="bg-brand-navy text-white" lang={lang}>
+      <div className="mx-auto max-w-5xl px-4 py-12 md:px-6">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
           <div>
-            <span className="text-[22px] font-serif font-bold text-white tracking-tight">MM</span>
-            <span className="font-serif font-semibold text-white">Marinelys<span className="text-brand-gold">Marte</span></span>
-            <p className="mt-3 text-sm text-brand-navy/40 max-w-xs leading-relaxed">
-              Agente immobiliare iscritta all'albo e al ruolo — CCIAA Bologna.
+            <Link href={home} className="flex items-baseline gap-2">
+              <span className="text-[20px] font-serif font-bold tracking-tight">
+                MM
+              </span>
+              <span className="font-serif text-lg font-semibold">
+                Marinelys<span className="text-brand-gold">Marte</span>
+              </span>
+            </Link>
+            <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/70">
+              {T.footer.albo}
             </p>
           </div>
+
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Contatti</h3>
-            <ul className="space-y-2 text-sm text-brand-navy/60">
+            <h2 className="mb-4 text-sm font-semibold text-white">
+              {T.footer.contacts}
+            </h2>
+            <ul className="space-y-2 text-sm text-white/80">
               <li>
-                <a href={`tel:${phone.replace(/\s/g, "")}`} className="hover:text-brand-gold transition-colors">
-                  {phone}
+                <a
+                  href={phoneHref}
+                  className="transition-colors hover:text-brand-gold"
+                >
+                  {contact.phone}
                 </a>
               </li>
               <li>
-                <a href={`mailto:${email}`} className="hover:text-brand-gold transition-colors">
-                  {email}
+                <a
+                  href={emailHref}
+                  className="transition-colors hover:text-brand-gold"
+                >
+                  {contact.email}
                 </a>
               </li>
-              <li>Bologna, Italia</li>
+              <li>
+                {contact.locality}, {contact.countryName}
+              </li>
             </ul>
           </div>
+
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Pagine</h3>
-            <ul className="space-y-2 text-sm text-brand-navy/60">
+            <h2 className="mb-4 text-sm font-semibold text-white">
+              {T.footer.pages}
+            </h2>
+            <ul className="space-y-2 text-sm text-white/80">
               <li>
-                <Link href="#faq" className="hover:text-brand-gold transition-colors">
+                <Link
+                  href="#faq"
+                  className="transition-colors hover:text-brand-gold"
+                >
                   {T.nav.faq}
                 </Link>
               </li>
               <li>
-                <Link href="/brandbook" className="hover:text-brand-gold transition-colors">
-                  {T.nav.brandbook}
+                <Link
+                  href="/privacy"
+                  className="transition-colors hover:text-brand-gold"
+                >
+                  {T.footer.privacy}
                 </Link>
               </li>
               <li>
-                <a href="/privacy" className="hover:text-brand-gold transition-colors">
-                  {T.footer.privacy}
-                </a>
-              </li>
-              <li>
-                <a href="/cookie-policy" className="hover:text-brand-gold transition-colors">
+                <Link
+                  href="/cookie-policy"
+                  className="transition-colors hover:text-brand-gold"
+                >
                   {T.footer.cookies}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-brand-navy/30 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-brand-navy/50">
+        <div className="mt-10 flex flex-col items-center justify-between gap-4 text-sm text-white/60 md:flex-row">
           <p>
             {T.footer.legal}. {year}. Tutti i diritti riservati.
           </p>
           <p className="text-center md:text-left">
-            P.IVA 00000000000 • REA BO-000000
+            P.IVA {contact.vat} • REA {contact.rea}
           </p>
         </div>
+
+        <p className="mt-4 text-sm leading-relaxed text-white/50">
+          Foto: «Bologna, Str. Maggiore, portico» e «Bologna, Via Irnerio,
+          portico» di MenkinAlRire, CC BY-SA 4.0; «Bologna Piazza Maggiore 1»
+          di Zairon, CC0 — via Wikimedia Commons.
+        </p>
       </div>
     </footer>
   );

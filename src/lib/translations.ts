@@ -8,13 +8,11 @@ export type Translations = {
     process: string;
     faq: string;
     contact: string;
-    brandbook: string;
   };
   hero: {
     title: string;
     sub: string;
     cta: string;
-    badge: string;
   };
   about: {
     title: string;
@@ -45,17 +43,30 @@ export type Translations = {
       email: string;
       message: string;
       submit: string;
+      sending: string;
       success: string;
+      error: string;
+      fallback: string;
+      privacy: string;
     };
     phone: string;
     email: string;
     address: string;
+  };
+  cookie: {
+    title: string;
+    body: string;
+    accept: string;
+    reject: string;
+    details: string;
   };
   footer: {
     legal: string;
     privacy: string;
     cookies: string;
     albo: string;
+    contacts: string;
+    pages: string;
   };
 };
 
@@ -67,11 +78,8 @@ const base = {
     process: "Come lavoro",
     faq: "FAQ",
     contact: "Contatti",
-    brandbook: "Brand",
   },
-  hero: {
-    badge: "Consulente immobiliare • Bologna",
-  },
+  hero: {},
   about: {
     badge: "Iscritta all'albo e al ruolo • CCIAA Bologna",
   },
@@ -95,17 +103,33 @@ const base = {
       email: "Email (opzionale)",
       message: "Qualche dettaglio sull'immobile",
       submit: "Invia la richiesta",
+      sending: "Invio in corso…",
       success: "Richiesta inviata. Ti richiamo io entro 24 ore.",
+      error:
+        "Non siamo riusciti a inviare la richiesta. Riprova o chiamaci direttamente.",
+      fallback:
+        "Abbiamo aperto il tuo programma di posta: completa l'invio per farci ricevere la richiesta.",
+      privacy:
+        "Usiamo i tuoi dati solo per ricontattarti in merito a questa richiesta. Nessuna cessione a terzi.",
     },
     phone: "Telefono",
     email: "Email",
     address: "Bologna",
+  },
+  cookie: {
+    title: "Cookie",
+    body: "Usiamo solo cookie tecnici necessari al funzionamento del sito. Nessun cookie di profilazione.",
+    accept: "Accetta",
+    reject: "Rifiuta",
+    details: "Dettagli",
   },
   footer: {
     legal: "Marinelys Marte — Agente immobiliare",
     privacy: "Privacy",
     cookies: "Cookie",
     albo: "Iscritta all'albo e al ruolo degli agenti di affari in mediazione — CCIAA Bologna",
+    contacts: "Contatti",
+    pages: "Pagine",
   },
 } as const;
 
@@ -193,7 +217,7 @@ export const t: Record<Lang, Translations> = {
     about: {
       title: "About me",
       sub: "Marinelys Marte, real estate agent duly enrolled in the register and role. I operate in Bologna with a 360° consulting method designed for owners who need to sell.",
-      bio: "I believe selling a home is not just a negotiation, but a path of care for the property: from realistic valuation to home preparation, from condominium management to energy diagnosis, up to energy communities. A single contact, no call center.",
+      bio: "I believe selling a home means caring for the property at every step: from realistic valuation to preparing the house, from condominium management to energy diagnosis, up to energy communities. A single contact, no call center.",
       ...base.about,
     },
     services: {
@@ -250,6 +274,43 @@ export const t: Record<Lang, Translations> = {
           a: "They are associations of renewable energy producers and consumers. I can guide you through access for your property in Bologna.",
         },
       ],
+    },
+    contact: {
+      title: "Book a call",
+      sub: "Tell me about your property. I will call you back within 24 hours, no obligation.",
+      form: {
+        name: "Full name",
+        phone: "Phone",
+        email: "Email (optional)",
+        message: "A few details about the property",
+        submit: "Send request",
+        sending: "Sending…",
+        success: "Request sent. I will call you back within 24 hours.",
+        error:
+          "We could not send your request. Try again or call us directly.",
+        fallback:
+          "We opened your email app: send the message to complete your request.",
+        privacy:
+          "We use your data only to contact you about this request. Never shared with third parties.",
+      },
+      phone: "Phone",
+      email: "Email",
+      address: "Bologna",
+    },
+    cookie: {
+      title: "Cookies",
+      body: "We only use technical cookies required for the site to work. No profiling cookies.",
+      accept: "Accept",
+      reject: "Reject",
+      details: "Details",
+    },
+    footer: {
+      legal: "Marinelys Marte — Real estate agent",
+      privacy: "Privacy",
+      cookies: "Cookies",
+      albo: "Registered in the register and role of real estate agents — CCIAA Bologna",
+      contacts: "Contact",
+      pages: "Pages",
     },
   },
   es: {
@@ -321,6 +382,43 @@ export const t: Record<Lang, Translations> = {
           a: "Son asociaciones de productores y consumidores de energía renovable. Puedo guiarla en el acceso para su inmueble en Bolonia.",
         },
       ],
+    },
+    contact: {
+      title: "Solicite una llamada",
+      sub: "Cuénteme sobre su inmueble. Le devolveré la llamada en 24 horas, sin compromiso.",
+      form: {
+        name: "Nombre y apellidos",
+        phone: "Teléfono",
+        email: "Email (opcional)",
+        message: "Algún detalle sobre el inmueble",
+        submit: "Enviar solicitud",
+        sending: "Enviando…",
+        success: "Solicitud enviada. Le llamaré en 24 horas.",
+        error:
+          "No hemos podido enviar la solicitud. Inténtelo de nuevo o llámenos directamente.",
+        fallback:
+          "Hemos abierto tu aplicación de correo: envía el mensaje para completar la solicitud.",
+        privacy:
+          "Usamos sus datos solo para contactarle sobre esta solicitud. Nunca se comparten con terceros.",
+      },
+      phone: "Teléfono",
+      email: "Email",
+      address: "Bolonia",
+    },
+    cookie: {
+      title: "Cookies",
+      body: "Solo usamos cookies técnicas necesarias para el funcionamiento del sitio. Sin cookies de perfilado.",
+      accept: "Aceptar",
+      reject: "Rechazar",
+      details: "Detalles",
+    },
+    footer: {
+      legal: "Marinelys Marte — Agente inmobiliaria",
+      privacy: "Privacidad",
+      cookies: "Cookies",
+      albo: "Inscrita en el colegio y el rol de agentes inmobiliarios — CCIAA Bolonia",
+      contacts: "Contacto",
+      pages: "Páginas",
     },
   },
 };

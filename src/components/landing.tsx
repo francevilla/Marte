@@ -1,80 +1,84 @@
-"use strict";
-
 import Link from "next/link";
-import { t } from "@/lib/translations";
-import type { Lang, Translations } from "@/lib/translations";
-import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
+import { Navigation } from "@/components/navigation";
 import { SectionHeader } from "@/components/section-header";
 import { ContactForm } from "@/components/contact-form";
-
-const subjectBase = "https://marinelysmarte.it";
+import { MotionBoot } from "@/components/motion-boot";
+import { buildSchema } from "@/lib/schema";
+import type { Lang, Translations } from "@/lib/translations";
 
 export function Landing({ lang, T }: { lang: Lang; T: Translations }) {
-  const subject = `${subjectBase}/${lang === "it" ? "" : lang + "/"}`;
+  const schema = buildSchema(lang, T);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-[#0F172A]">
-      <a href="#contact" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#1B2A4A] focus:text-white focus:rounded">
-        Vai ai contatti
+    <div className="flex min-h-dvh flex-col bg-white text-ink">
+      <MotionBoot />
+      <a
+        href="#contact"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-brand-navy focus:px-4 focus:py-2 focus:text-white"
+      >
+        {T.nav.contact}
       </a>
       <Navigation lang={lang} T={T} />
 
       <main className="flex-grow">
         {/* HERO */}
-        <section
-          id="hero"
-          className="relative px-4 pt-20 pb-12 lg:pt-32 lg:pb-20 overflow-hidden"
-        >
+        <section id="hero" className="px-4 pb-16 pt-12 md:pt-16">
           <div className="mx-auto max-w-5xl text-center">
-            <span className="inline-block px-3 py-1 mb-6 text-xs font-semibold tracking-wider text-brand-gold uppercase bg-[#1B2A4A]/10 rounded-full border border-brand-gold/20">
-              {T.hero.badge}
-            </span>
-            <h1 className="text-[48px] lg:text-[64px] font-serif font-bold text-[#0F172A] mb-6 leading-[1.15] tracking-tight">
+            <h1 className="text-[44px] font-serif font-bold leading-[1.05] tracking-[-0.03em] text-ink sm:text-[56px] lg:text-[72px]" data-reveal>
               {T.hero.title}
             </h1>
-            <p className="text-lg lg:text-xl text-[#475569] mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-[#475569] md:text-xl" data-reveal style={{ "--reveal-delay": "80ms" } as React.CSSProperties}>
               {T.hero.sub}
             </p>
             <Link
               href="#contact"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#1B2A4A] text-white font-semibold rounded-full ring-1 ring-brand-gold/40 hover:bg-[#14203a] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2"
+              data-reveal
+              style={{ "--reveal-delay": "160ms" } as React.CSSProperties}
+              className="mt-10 inline-flex items-center justify-center gap-2 rounded-full bg-brand-navy px-8 py-4 font-semibold text-white transition-colors hover:bg-[#14203a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2"
             >
               {T.hero.cta} →
             </Link>
           </div>
         </section>
 
+        <figure className="w-full" data-reveal>
+          <img
+            src="/images/bologna-str-maggiore-portico.jpg"
+            alt="Portico di Strada Maggiore a Bologna, con la torre della basilica dei Servi"
+            width="1920"
+            height="1281"
+            className="h-[42vh] w-full object-cover md:h-[52vh]"
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
+
         {/* ABOUT */}
-        <section id="about" className="px-4 py-20 lg:py-28 bg-[#F7F3EE]">
+        <section id="about" className="bg-brand-cream px-4 py-20 lg:py-28">
           <div className="mx-auto max-w-5xl">
             <SectionHeader title={T.about.title} sub={T.about.sub} />
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="relative h-64 lg:h-80 rounded-2xl overflow-hidden border border-white ring-1 ring-brand-gold/30">
+            <div className="grid items-center gap-12 lg:grid-cols-2">
+              <div className="relative h-72 overflow-hidden lg:h-96" data-reveal>
                 <img
                   src="/images/profile.jpg"
                   alt="Marinelys Marte"
-                  className="w-full h-full object-cover"
-                  loading="eager"
+                  className="h-full w-full object-cover"
+                  loading="lazy"
                   width="800"
                   height="800"
                   decoding="async"
                 />
               </div>
               <div className="space-y-6">
-                <p className="text-lg text-[#475569] leading-relaxed">
+                <p className="text-lg leading-relaxed text-[#475569]">
                   {T.about.bio}
                 </p>
-                <div className="flex items-center gap-3 pt-4">
-                  <span className="w-10 h-10 rounded-full bg-[#1B2A4A] flex items-center justify-center text-white font-bold text-xs uppercase tracking-wider">
-                    AM
-                  </span>
-                  <p className="text-sm font-semibold text-[#0F172A]">
-                    Marinelys Marte — Agente immobiliare
-                  </p>
-                </div>
-                <p className="text-sm text-[#475569] bg-white p-4 rounded-lg border border-[#C9A96A]/30">
-                  <strong>{T.about.badge}</strong>
+                <p className="text-sm font-semibold text-ink">
+                  {T.footer.legal}
+                </p>
+                <p className="text-sm leading-relaxed text-[#475569]">
+                  {T.about.badge}
                 </p>
               </div>
             </div>
@@ -85,45 +89,58 @@ export function Landing({ lang, T }: { lang: Lang; T: Translations }) {
         <section id="services" className="px-4 py-20 lg:py-28">
           <div className="mx-auto max-w-5xl">
             <SectionHeader title={T.services.title} sub={T.services.sub} />
-            <div className="grid md:grid-cols-3 gap-8">
-              {T.services.items.map((s, i) => (
-                <article
-                  key={i}
-                  className="p-8 rounded-2xl border border-[#E2E8F0] bg-white hover:border-brand-gold/50 transition-colors group"
-                >
-                  <div className="w-12 h-12 rounded-full bg-[#1B2A4A]/10 flex items-center justify-center mb-6 group-hover:bg-brand-gold group-hover:text-white transition-colors">
-                    <span className="text-lg">{String.fromCharCode(65 + i)}</span>
+            <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
+              <div className="grid gap-x-12 gap-y-10 md:grid-cols-2" data-reveal>
+                {T.services.items.map((s) => (
+                  <div key={s.title}>
+                    <h3 className="font-serif text-xl font-bold text-ink">
+                      {s.title}
+                    </h3>
+                    <p className="mt-2 leading-relaxed text-[#475569]">
+                      {s.desc}
+                    </p>
                   </div>
-                  <h3 className="text-lg font-serif font-bold text-[#0F172A] mb-3">
-                    {s.title}
-                  </h3>
-                  <p className="text-[#475569] leading-relaxed">{s.desc}</p>
-                </article>
-              ))}
+                ))}
+              </div>
+              <img
+                src="/images/bologna-via-irnerio-portico.jpg"
+                alt="Portico di Via Irnerio a Bologna nel pomeriggio"
+                width="1920"
+                height="1440"
+                className="aspect-[4/3] w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
           </div>
         </section>
 
         {/* PROCESS */}
-        <section id="process" className="px-4 py-20 lg:py-28 bg-[#F7F3EE]">
+        <section id="process" className="bg-brand-cream px-4 py-20 lg:py-28">
           <div className="mx-auto max-w-5xl">
             <SectionHeader title={T.process.title} sub={T.process.sub} />
-            <div className="grid md:grid-cols-2 gap-12">
-              {T.process.steps.map((step, i) => (
-                <div key={i} className="flex gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#1B2A4A] flex items-center justify-center text-white font-serif font-bold text-lg">
-                    {i + 1}
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-serif font-bold text-[#0F172A] mb-1">
+            <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+              <img
+                src="/images/bologna-piazza-maggiore-1.jpg"
+                alt="Palazzo Re Enzo e la torre in Piazza Maggiore a Bologna"
+                width="1600"
+                height="1200"
+                className="aspect-[4/3] w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="grid gap-x-12 gap-y-10 md:grid-cols-2" data-reveal>
+                {T.process.steps.map((step) => (
+                  <div key={step.title}>
+                    <h3 className="font-serif text-xl font-bold text-ink">
                       {step.title}
                     </h3>
-                    <p className="text-[#475569] text-sm leading-relaxed">
+                    <p className="mt-2 leading-relaxed text-[#475569]">
                       {step.desc}
                     </p>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -132,13 +149,15 @@ export function Landing({ lang, T }: { lang: Lang; T: Translations }) {
         <section id="faq" className="px-4 py-20 lg:py-28">
           <div className="mx-auto max-w-3xl">
             <SectionHeader title={T.faq.title} />
-            <div className="space-y-4">
-              {T.faq.items.map((item, i) => (
-                <div key={i} className="border border-[#E2E8F0] rounded-xl bg-white p-6">
-                  <h3 className="font-serif font-bold text-[#0F172A] mb-2">
+            <div className="space-y-8">
+              {T.faq.items.map((item) => (
+                <div key={item.q} data-reveal>
+                  <h3 className="font-serif text-lg font-bold text-ink">
                     {item.q}
                   </h3>
-                  <p className="text-[#475569] text-sm leading-relaxed">{item.a}</p>
+                  <p className="mt-2 leading-relaxed text-[#475569]">
+                    {item.a}
+                  </p>
                 </div>
               ))}
             </div>
@@ -146,9 +165,13 @@ export function Landing({ lang, T }: { lang: Lang; T: Translations }) {
         </section>
 
         {/* CONTACT */}
-        <section id="contact" className="px-4 py-20 lg:py-28 bg-[#1B2A4A]">
-          <div className="mx-auto max-w-3xl">
-            <SectionHeader title={T.contact.title} sub={T.contact.sub} />
+        <section id="contact" className="bg-brand-navy px-4 py-20 lg:py-28">
+          <div className="mx-auto max-w-3xl" data-reveal>
+            <SectionHeader
+              title={T.contact.title}
+              sub={T.contact.sub}
+              variant="dark"
+            />
             <ContactForm lang={lang} T={T} />
           </div>
         </section>
@@ -156,105 +179,9 @@ export function Landing({ lang, T }: { lang: Lang; T: Translations }) {
 
       <Footer lang={lang} T={T} />
 
-      {/* JSON-LD: RealEstateAgent + LocalBusiness + Person */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@graph": [
-              {
-                "@type": "Person",
-                "@id": `${subject}#person`,
-                "name": "Marinelys Marte",
-                "jobTitle": "Agente immobiliare",
-                "worksFor": {
-                  "@type": "RealEstateAgent",
-                  "@id": `${subject}#agency`,
-                },
-                "memberOf": [
-                  {
-                    "@type": "Organization",
-                    "name": "Albo e ruolo degli agenti di affari in mediazione",
-                    "legalName": "Camera di Commercio di Bologna",
-                  },
-                ],
-                "image": `${subject}images/profile-placeholder.svg`,
-                "address": {
-                  "@type": "PostalAddress",
-                  "addressLocality": "Bologna",
-                  "addressCountry": "IT",
-                },
-                "telephone": "+393330000000",
-                "email": "info@marinelysmarte.it",
-                "url": subject,
-                "sameAs": [],
-                "knowsAbout": [
-                  "compravendita immobiliare",
-                  "stima immobile",
-                  "trattativa immobiliare",
-                  "gestioni condominiali",
-                  "diagnosi energetica",
-                  "comunità energetiche",
-                  "riqualificazione immobiliare",
-                ],
-              },
-              {
-                "@type": "RealEstateAgent",
-                "@id": `${subject}#agency`,
-                "name": "Marinelys Marte — Consulenza Immobiliare 360°",
-                "legalName": "Marinelys Marte",
-                "description": "Consulenza immobiliare 360° per proprietari venditori a Bologna: vendita, trattativa, gestioni condominiali, riqualificazioni, diagnosi energetica e comunità energetiche.",
-                "address": {
-                  "@type": "PostalAddress",
-                  "addressLocality": "Bologna",
-                  "addressCountry": "IT",
-                },
-                "telephone": "+393330000000",
-                "email": "info@marinelysmarte.it",
-                "url": subject,
-                "priceRange": "€€",
-                "hasCredential": {
-                  "@type": "OccupationalCredential",
-                  "name": "Iscrizione all'albo e al ruolo degli agenti di affari in mediazione",
-                  "issuedBy": {
-                    "@type": "Organization",
-                    "name": "Camera di Commercio di Bologna",
-                  },
-                },
-                "areaServed": [
-                  {
-                    "@type": "City",
-                    "name": "Bologna",
-                    "country": "IT",
-                  },
-                ],
-              },
-              {
-                "@type": "LocalBusiness",
-                "@id": `${subject}#localbusiness`,
-                "name": "Marinelys Marte",
-                "image": `${subject}images/profile-placeholder.svg`,
-                "address": {
-                  "@type": "PostalAddress",
-                  "addressLocality": "Bologna",
-                  "addressCountry": "IT",
-                },
-                "telephone": "+393330000000",
-                "email": "info@marinelysmarte.it",
-                "url": subject,
-                "geo": {
-                  "@type": "GeoCoordinates",
-                  "latitude": 44.4949,
-                  "longitude": 11.3426,
-                },
-                "openingHours": "Mo-Fr 09:00-18:00",
-                "sameAs": [],
-                "knowsAbout": ["real estate", "property sale", "energy efficiency"],
-              },
-            ],
-          }),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
     </div>
   );

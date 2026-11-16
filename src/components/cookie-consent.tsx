@@ -1,21 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { t } from "@/lib/translations";
 import type { Lang, Translations } from "@/lib/translations";
 
 const COOKIE_KEY = "marte_cookie_consent";
 
 export function CookieConsent({ lang, T }: { lang: Lang; T: Translations }) {
-  const [shown, setShown] = useState(true);
+  const [shown, setShown] = useState(false);
 
   useEffect(() => {
     const consent = localStorage.getItem(COOKIE_KEY);
-    if (consent === "true") setShown(false);
+    if (consent !== "true" && consent !== "false") setShown(true);
   }, []);
 
-  function accept() {
-    localStorage.setItem(COOKIE_KEY, "true");
+  function choose(value: "true" | "false") {
+    localStorage.setItem(COOKIE_KEY, value);
     setShown(false);
   }
 
@@ -23,34 +22,35 @@ export function CookieConsent({ lang, T }: { lang: Lang; T: Translations }) {
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 z-[60] bg-[#1B2A4A] text-white px-4 py-6 md:px-8 lg:max-w-2xl lg:mx-auto lg:rounded-t-2xl lg:bottom-8 lg:left-[50%] lg:translate-x-[-50%] shadow-[0_0_0_1px_rgba(255,255,255,0.10)]"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Informativa cookie"
+      className="relative z-40 bg-brand-navy px-4 py-4 text-white md:px-8"
+      role="region"
+      aria-label={T.cookie.title}
+      lang={lang}
     >
-      <div className="max-w-2xl mx-auto flex flex-col lg:flex-row lg:items-center gap-4">
-        <div className="flex-grow">
-          <p className="text-sm text-[#C9A96A]/90 font-medium mb-1">
-            {T.footer.cookies}
-          </p>
-          <p className="text-sm text-[#E2E8F0] leading-relaxed">
-            Usiamo cookie tecnici necessari al funzionamento del sito. Puoi
-            gestire le preferenze in qualsiasi momento dalla pagina cookie
-            policy.
-          </p>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-3 justify-end">
+      <div className="mx-auto flex max-w-5xl flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <p className="max-w-2xl text-sm leading-relaxed text-white/80">
+          {T.cookie.body}{" "}
           <a
             href="/cookie-policy"
-            className="text-sm text-[#C9A96A] underline underline-offset-2 hover:text-white transition-colors"
+            className="text-brand-gold underline underline-offset-2 hover:text-white"
           >
-            Dettagli
+            {T.cookie.details}
           </a>
+        </p>
+        <div className="flex shrink-0 gap-3">
           <button
-            onClick={accept}
-            className="px-5 py-2 bg-brand-gold text-[#1B2A4A] font-bold rounded text-sm hover:opacity-90 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+            type="button"
+            onClick={() => choose("false")}
+            className="rounded border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
           >
-            Accetta
+            {T.cookie.reject}
+          </button>
+          <button
+            type="button"
+            onClick={() => choose("true")}
+            className="rounded bg-brand-gold px-4 py-2 text-sm font-bold text-brand-navy hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          >
+            {T.cookie.accept}
           </button>
         </div>
       </div>
